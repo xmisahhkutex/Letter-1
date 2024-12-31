@@ -1,43 +1,132 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bì Thư Mở Ra</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(to bottom right, #f0e6d2, #e4d5b7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+        .envelope {
+            position: relative;
+            width: 350px;
+            height: 220px;
+            background: #d4a373;
+            border-radius: 5px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+        .envelope:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+        /* Flap */
+        .flap {
+            position: absolute;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom, #c78e58, #d4a373);
+            top: 0;
+            left: 0;
+            border-bottom: 2px solid #a56b3e;
+            transform-origin: top center;
+            transition: transform 0.5s ease-in-out;
+        }
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+        /* Letter inside */
+        .letter {
+            position: absolute;
+            width: 90%;
+            height: 70%;
+            background: #fff;
+            top: 40%;
+            left: 5%;
+            padding: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.5s ease-in-out;
+            border-radius: 5px;
+        }
 
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+        }
+
+        .envelope.open .letter {
+            transform: translateY(0);
+        }
+
+        /* Typing Effect */
+        .typing-text {
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: 'Georgia', serif;
+            color: #444;
+            white-space: pre-wrap;
+            border-right: 2px solid #444;
+            display: inline-block;
+            overflow: hidden;
+            animation: typing 5s steps(50, end), blink 0.8s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Background for Letter */
+        .letter-content {
+            background: linear-gradient(to bottom, #fafafa, #f0f0f0);
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="envelope" onclick="openEnvelope()">
+    <div class="flap"></div>
+    <div class="letter">
+        <div class="letter-content">
+            <div class="typing-text">
+                Dear friend,<br><br>
+                This is a beautifully styled envelope with a smooth opening animation.<br>
+                Enjoy the elegant design and the typing effect!<br><br>
+                Warm regards,<br>
+                Your Assistant
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openEnvelope() {
+        const envelope = document.querySelector('.envelope');
+        envelope.classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>
